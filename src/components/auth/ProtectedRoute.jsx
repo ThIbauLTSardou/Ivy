@@ -27,7 +27,7 @@ export default function ProtectedRoute({ requireOnboarding = true }) {
     )
   }
 
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return <Navigate to="/landing" replace />
 
   // Si profil chargé et onboarding non complété, redirige vers /onboarding
   if (requireOnboarding && profile && !profile.onboarding_completed && location.pathname !== '/onboarding') {

@@ -1,99 +1,45 @@
-import Groq from 'groq-sdk'
-
-const groq = new Groq({
-  apiKey: import.meta.env.VITE_GROQ_API_KEY,
-  dangerouslyAllowBrowser: true,
-})
+const BASE = import.meta.env.VITE_SUPABASE_URL
 
 /**
- * Transcrit un blob audio en texte via Whisper (Groq)
- * @param {Blob} audioBlob
- * @returns {Promise<string>}
+ * Transcrit un blob audio en texte via l'edge function ivy-voice
+ * La clé Groq/Whisper reste côté serveur
  */
 export async function transcribeAudio(audioBlob) {
-  const file = new File([audioBlob], 'memo.webm', { type: audioBlob.type })
+  const fd = new FormData()
+  fd.append('audio', new File([audioBlob], 'memo.webm', { type: audioBlob.type }))
 
-  const transcription = await groq.audio.transcriptions.create({
-    file,
-    model: 'whisper-large-v3-turbo',
-    language: 'fr',
+  const res = await fetch(`${BASE}/functions/v1/ivy-voice-transcribe`, {
+    method: 'POST',
+    body: fd,
   })
-
-  return transcription.text
+  if (!res.ok) throw new Error('Erreur transcription')
+  const { text } = await res.json()
+  return text
 }
 
 /**
- * Analyse un texte de mémo vocal et extrait les actions structurées
- * @param {string} transcript
- * @returns {Promise<{tasks: Array, stockAlerts: Array, smsDraft: string|null}>}
+ * Analyse un mémo vocal via l'edge function ivy-voice
  */
 export async function analyzeVoiceMemo(transcript) {
-  const completion = await groq.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
-    temperature: 0.2,
-    messages: [
-      {
-        role: 'system',
-        content: `Tu es Ivy, l'assistant IA d'un CRM pour artisans du BTP en France.
-Analyse le mémo vocal d'un artisan et extrais les actions structurées.
-Réponds UNIQUEMENT en JSON valide, sans markdown ni texte autour.
-
-Format de réponse :
-{
-  "tasks": [{ "title": "string", "date": "string|null", "client": "string|null" }],
-  "stockAlerts": [{ "item": "string", "qty": "number|null", "ref": "string|null" }],
-  "smsDraft": "string|null",
-  "summary": "string"
-}
-
-Règles :
-- tasks : rendez-vous, retours chantier, choses à faire
-- stockAlerts : matériaux manquants, commandes à passer
-- smsDraft : si un client doit être prévenu, rédige un SMS professionnel et cordial
-- summary : résumé court en 1 phrase`,
-      },
-      {
-        role: 'user',
-        content: `Mémo vocal : "${transcript}"`,
-      },
-    ],
+  const res = await fetch(`${BASE}/functions/v1/ivy-voice`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ transcript }),
   })
-
-  const raw = completion.choices[0]?.message?.content ?? '{}'
-  try {
-    return JSON.parse(raw)
-  } catch {
-    return { tasks: [], stockAlerts: [], smsDraft: null, summary: transcript }
-  }
+  if (!res.ok) return { tasks: [], stockAlerts: [], smsDraft: null, summary: transcript }
+  return res.json()
 }
 
 /**
- * Génère une relance personnalisée selon le sentiment détecté
- * @param {object} params
- * @returns {Promise<string>}
+ * Génère une relance via l'edge function ivy-relance
  */
 export async function generateRelance({ client, devis, montant, canal, sentiment, sentimentContext }) {
-  const completion = await groq.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
-    temperature: 0.4,
-    messages: [
-      {
-        role: 'system',
-        content: `Tu es l'assistant IA d'un artisan du BTP. Rédige une relance ${canal} professionnelle, chaleureuse et adaptée au contexte.
-Réponds UNIQUEMENT avec le texte du message, sans sujet d'email ni explication.`,
-      },
-      {
-        role: 'user',
-        content: `Client : ${client}
-Devis : ${devis} (${montant})
-Canal : ${canal}
-Sentiment détecté : ${sentiment}
-Contexte : ${sentimentContext || 'Aucun'}
-
-Rédige la relance.`,
-      },
-    ],
+  const res = await fetch(`${BASE}/functions/v1/ivy-relance`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ client, devis, montant, canal, sentiment, sentimentContext }),
   })
-
-  return completion.choices[0]?.message?.content ?? ''
+  if (!res.ok) return ''
+  const { text } = await res.json()
+  return text
 }

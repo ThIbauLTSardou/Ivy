@@ -231,7 +231,7 @@ export default function DevisDetail() {
 
       const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch(
-        'https://ubsmlouxaedzxocmccfd.supabase.co/functions/v1/devis-voice',
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/devis-voice`,
         {
           method: 'POST',
           headers: { Authorization: `Bearer ${session.access_token}` },
