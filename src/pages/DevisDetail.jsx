@@ -38,7 +38,7 @@ function newLigne(ordre = 0) {
     unite: 'forfait',
     quantite: 1,
     prix_unitaire_ht: 0,
-    tva_taux: 20,
+    tva_taux: 0,
     remise_pct: 0,
     ordre,
   }
@@ -79,10 +79,10 @@ export default function DevisDetail() {
     date_emission: new Date().toISOString().slice(0, 10),
     date_validite: new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10),
     delai_realisation: '',
-    tva_taux: 20,
+    tva_taux: 0,
     remise_pct: 0,
-    acompte_pct: 30,
-    conditions_paiement: 'Acompte de 30% à la commande, solde à réception des travaux.',
+    acompte_pct: 0,
+    conditions_paiement: '',
     statut: 'brouillon',
   })
   const [lignes, setLignes] = useState([newLigne(0)])

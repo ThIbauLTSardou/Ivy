@@ -102,10 +102,10 @@ export function ErrorBox({ message }) {
 
 export const inputStyle = {
   width: '100%',
-  background: '#141414',
-  border: '1px solid #2a2a2a',
+  background: 'var(--surface-2)',
+  border: '1px solid var(--border-strong)',
   borderRadius: '8px',
-  color: '#ededed',
+  color: 'var(--text-primary)',
   fontSize: '14px',
   padding: '11px 13px 11px 38px',
   outline: 'none',
@@ -115,12 +115,12 @@ export const inputStyle = {
 
 export const submitBtn = {
   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-  background: '#3ecf8e', color: '#0a0a0a', fontWeight: '600', fontSize: '14px',
+  background: 'var(--brand)', color: '#0a0a0a', fontWeight: '600', fontSize: '14px',
   border: 'none', borderRadius: '8px', padding: '12px', marginTop: '4px',
   cursor: 'pointer', transition: 'opacity 0.15s', fontFamily: 'inherit',
   width: '100%',
 }
 
 export const linkStyle = {
-  color: '#3ecf8e', fontWeight: '500', textDecoration: 'none',
+  color: 'var(--brand)', fontWeight: '500', textDecoration: 'none',
 }

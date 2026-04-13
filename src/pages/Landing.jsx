@@ -1,24 +1,25 @@
 import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useTheme } from '../contexts/ThemeContext'
 import {
   FileText, Users, Mic, Zap, ArrowRight, Star,
   TrendingUp, Clock, Shield, CheckCircle2, ChevronDown,
-  BarChart3, BookOpen, Send, Package, Building2, HardHat, Briefcase,
-  Play,
+  BookOpen, Building2, HardHat, Briefcase, Play, Sun, Moon,
 } from 'lucide-react'
 
-const G = '#3ecf8e'
-const G2 = '#3ecf8e22'
-const G3 = '#3ecf8e44'
+const G = 'var(--brand)'
+const G2 = 'var(--brand-muted)'
+const G3 = 'var(--brand-hover)'
 
 export default function Landing() {
   const { user, loading } = useAuth()
+  const { theme, toggle } = useTheme()
   if (loading) return null
   if (user) return <Navigate to="/" replace />
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#ededed', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--background)', color: 'var(--text-primary)', fontFamily: 'Inter, -apple-system, sans-serif' }}>
 
       {/* ─────────────────────────────────────────────
           NAV
@@ -27,8 +28,9 @@ export default function Landing() {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 48px', height: '64px',
-        background: 'rgba(10,10,10,0.8)', backdropFilter: 'blur(16px)',
-        borderBottom: '1px solid #1a1a1a',
+        background: 'color-mix(in srgb, var(--background) 80%, transparent)',
+        backdropFilter: 'blur(16px)',
+        borderBottom: '1px solid var(--border)',
       }}>
         <Logo size={22} />
         <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
@@ -37,6 +39,9 @@ export default function Landing() {
           <a href="#faq" style={navLink}>FAQ</a>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button onClick={toggle} style={{ width: '34px', height: '34px', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-muted)', flexShrink: 0 }}>
+            {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+          </button>
           <Link to="/login" style={navLink}>Se connecter</Link>
           <Link to="/register" style={primaryBtn}>Commencer gratuitement →</Link>
         </div>
@@ -63,7 +68,7 @@ export default function Landing() {
           <span style={{ color: G }}>générés en 2 minutes.</span>
         </h1>
 
-        <p style={{ fontSize: 'clamp(15px, 1.8vw, 18px)', color: '#888', maxWidth: '500px', lineHeight: '1.75', marginBottom: '44px' }}>
+        <p style={{ fontSize: 'clamp(15px, 1.8vw, 18px)', color: 'var(--text-secondary)', maxWidth: '500px', lineHeight: '1.75', marginBottom: '44px' }}>
           ivy est l'outil de gestion conçu pour les artisans — devis, facturation, clients et bibliothèque de prestations. Tout ce dont vous avez besoin, rien de superflu.
         </p>
 
@@ -72,55 +77,55 @@ export default function Landing() {
             Commencer gratuitement
             <ArrowRight size={16} style={{ marginLeft: '8px' }} />
           </Link>
-          <a href="#features" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', color: '#ededed', fontWeight: '500', fontSize: '15px', padding: '14px 24px', borderRadius: '8px', border: '1px solid #2a2a2a', textDecoration: 'none' }}>
+          <a href="#features" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', color: 'var(--text-primary)', fontWeight: '500', fontSize: '15px', padding: '14px 24px', borderRadius: '8px', border: '1px solid var(--border-strong)', textDecoration: 'none' }}>
             <Play size={14} fill="#ededed" />
             Voir la démo
           </a>
         </div>
-        <p style={{ fontSize: '12px', color: '#444' }}>Gratuit · Sans carte bancaire · Accès immédiat</p>
+        <p style={{ fontSize: '12px', color: 'var(--text-disabled)' }}>Gratuit · Sans carte bancaire · Accès immédiat</p>
 
         {/* Dashboard mockup */}
         <div style={{ marginTop: '72px', width: '100%', maxWidth: '900px', position: 'relative' }}>
           <div style={{ position: 'absolute', inset: '-1px', borderRadius: '14px', background: `linear-gradient(180deg, ${G}33 0%, transparent 60%)`, zIndex: 0 }} />
-          <div style={{ position: 'relative', zIndex: 1, background: '#111', border: '1px solid #222', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ position: 'relative', zIndex: 1, background: 'var(--surface-1)', border: '1px solid #222', borderRadius: '12px', overflow: 'hidden' }}>
             {/* Barre de fenêtre */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '7px', padding: '12px 16px', borderBottom: '1px solid #1e1e1e', background: '#0d0d0d' }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#333' }} />
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#333' }} />
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#333' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '7px', padding: '12px 16px', borderBottom: '1px solid #1e1e1e', background: 'var(--surface-1)' }}>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--border-strong)' }} />
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--border-strong)' }} />
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--border-strong)' }} />
               <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-                <div style={{ background: '#1a1a1a', borderRadius: '5px', padding: '3px 14px', fontSize: '11px', color: '#555' }}>app.ivy.fr</div>
+                <div style={{ background: 'var(--border)', borderRadius: '5px', padding: '3px 14px', fontSize: '11px', color: 'var(--text-muted)' }}>app.ivy.fr</div>
               </div>
             </div>
             {/* Contenu mockup */}
             <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: '380px' }}>
               {/* Sidebar */}
-              <div style={{ background: '#0d0d0d', borderRight: '1px solid #1e1e1e', padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <div style={{ background: 'var(--surface-1)', borderRight: '1px solid #1e1e1e', padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 <div style={{ padding: '8px 10px', marginBottom: '8px' }}><Logo size={16} /></div>
                 {[['Dashboard', true], ['Devis', false], ['Clients', false], ['Bibliothèque', false]].map(([label, active]) => (
-                  <div key={label} style={{ padding: '8px 10px', borderRadius: '6px', fontSize: '12px', background: active ? G2 : 'transparent', color: active ? G : '#555', fontWeight: active ? '500' : '400' }}>{label}</div>
+                  <div key={label} style={{ padding: '8px 10px', borderRadius: '6px', fontSize: '12px', background: active ? G2 : 'transparent', color: active ? G : 'var(--text-muted)', fontWeight: active ? '500' : '400' }}>{label}</div>
                 ))}
               </div>
               {/* Main */}
               <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '10px' }}>
                   {[['CA du mois', '12 840 €', '+18%'], ['Devis en attente', '7', '3 urgents'], ['Taux d\'acceptation', '74%', '+6pts']].map(([label, val, sub]) => (
-                    <div key={label} style={{ background: '#161616', border: '1px solid #222', borderRadius: '8px', padding: '14px' }}>
-                      <div style={{ fontSize: '10px', color: '#555', marginBottom: '6px' }}>{label}</div>
-                      <div style={{ fontSize: '20px', fontWeight: '700', color: '#ededed', letterSpacing: '-0.5px' }}>{val}</div>
+                    <div key={label} style={{ background: 'var(--surface-2)', border: '1px solid #222', borderRadius: '8px', padding: '14px' }}>
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '6px' }}>{label}</div>
+                      <div style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-primary)', letterSpacing: '-0.5px' }}>{val}</div>
                       <div style={{ fontSize: '10px', color: G, marginTop: '2px' }}>{sub}</div>
                     </div>
                   ))}
                 </div>
-                <div style={{ background: '#161616', border: '1px solid #222', borderRadius: '8px', padding: '14px', flex: 1 }}>
-                  <div style={{ fontSize: '11px', color: '#555', marginBottom: '10px' }}>Devis récents</div>
+                <div style={{ background: 'var(--surface-2)', border: '1px solid #222', borderRadius: '8px', padding: '14px', flex: 1 }}>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '10px' }}>Devis récents</div>
                   {[['DEV-042', 'M. Dupont', 'Rénovation salle de bain', '3 200 €', 'Accepté'], ['DEV-041', 'Mme Martin', 'Pose carrelage', '1 840 €', 'En attente'], ['DEV-040', 'SCI Belmont', 'Gros œuvre', '18 600 €', 'Brouillon']].map(([ref, client, obj, mt, st]) => (
-                    <div key={ref} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 0', borderBottom: '1px solid #1a1a1a', fontSize: '11px' }}>
-                      <span style={{ color: '#444', width: '52px' }}>{ref}</span>
-                      <span style={{ color: '#888', flex: 1 }}>{client}</span>
-                      <span style={{ color: '#666', flex: 2 }}>{obj}</span>
-                      <span style={{ color: '#ededed', fontWeight: '600' }}>{mt}</span>
-                      <span style={{ background: st === 'Accepté' ? G2 : st === 'En attente' ? '#f59e0b22' : '#2a2a2a', color: st === 'Accepté' ? G : st === 'En attente' ? '#f59e0b' : '#666', padding: '2px 8px', borderRadius: '4px', fontSize: '10px' }}>{st}</span>
+                    <div key={ref} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 0', borderBottom: '1px solid var(--border)', fontSize: '11px' }}>
+                      <span style={{ color: 'var(--text-disabled)', width: '52px' }}>{ref}</span>
+                      <span style={{ color: 'var(--text-secondary)', flex: 1 }}>{client}</span>
+                      <span style={{ color: 'var(--text-muted)', flex: 2 }}>{obj}</span>
+                      <span style={{ color: 'var(--text-primary)', fontWeight: '600' }}>{mt}</span>
+                      <span style={{ background: st === 'Accepté' ? G2 : st === 'En attente' ? '#f59e0b22' : 'var(--border-strong)', color: st === 'Accepté' ? G : st === 'En attente' ? '#f59e0b' : 'var(--text-muted)', padding: '2px 8px', borderRadius: '4px', fontSize: '10px' }}>{st}</span>
                     </div>
                   ))}
                 </div>
@@ -140,14 +145,14 @@ export default function Landing() {
             <h2 style={h2}>Arrêtez de perdre du temps<br />sur la paperasse.</h2>
             <p style={sub}>Vous êtes artisan, pas comptable. ivy s'occupe de l'administratif pour que vous vous concentriez sur votre métier.</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1px', background: '#1a1a1a', border: '1px solid #1a1a1a', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
             {valueProps.map((v, i) => (
-              <div key={i} style={{ background: '#0d0d0d', padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div key={i} style={{ background: 'var(--surface-1)', padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: G2, border: `1px solid ${G3}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <v.icon size={20} color={G} />
                 </div>
-                <div style={{ fontSize: '17px', fontWeight: '600', color: '#ededed', letterSpacing: '-0.3px' }}>{v.title}</div>
-                <div style={{ fontSize: '13px', color: '#666', lineHeight: '1.75' }}>{v.desc}</div>
+                <div style={{ fontSize: '17px', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>{v.title}</div>
+                <div style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.75' }}>{v.desc}</div>
               </div>
             ))}
           </div>
@@ -182,20 +187,20 @@ export default function Landing() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
             {personas.map((p, i) => (
-              <div key={i} style={{ background: '#111', border: '1px solid #1e1e1e', borderRadius: '12px', padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'border-color 0.2s' }}
+              <div key={i} style={{ background: 'var(--surface-1)', border: '1px solid #1e1e1e', borderRadius: '12px', padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'border-color 0.2s' }}
                 onMouseEnter={e => e.currentTarget.style.borderColor = G3}
-                onMouseLeave={e => e.currentTarget.style.borderColor = '#1e1e1e'}
+                onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
               >
-                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <p.icon size={22} color="#555" />
                 </div>
                 <div>
-                  <div style={{ fontSize: '16px', fontWeight: '600', color: '#ededed', marginBottom: '8px' }}>{p.title}</div>
-                  <div style={{ fontSize: '13px', color: '#666', lineHeight: '1.7' }}>{p.desc}</div>
+                  <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px' }}>{p.title}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.7' }}>{p.desc}</div>
                 </div>
                 <ul style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingLeft: 0, listStyle: 'none' }}>
                   {p.points.map((pt, j) => (
-                    <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '12px', color: '#777' }}>
+                    <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)' }}>
                       <CheckCircle2 size={13} color={G} style={{ flexShrink: 0, marginTop: '1px' }} />
                       {pt}
                     </li>
@@ -210,14 +215,14 @@ export default function Landing() {
       {/* ─────────────────────────────────────────────
           5. SOCIAL PROOF
       ───────────────────────────────────────────── */}
-      <section style={{ padding: '100px 24px', borderTop: '1px solid #161616', background: '#080808' }}>
+      <section style={{ padding: '100px 24px', borderTop: '1px solid #161616', background: 'var(--background)' }}>
         <div style={{ maxWidth: '1040px', margin: '0 auto' }}>
           {/* Chiffres */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '2px', marginBottom: '80px', background: '#1a1a1a', border: '1px solid #1a1a1a', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '2px', marginBottom: '80px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
             {stats.map((s, i) => (
-              <div key={i} style={{ background: '#0d0d0d', padding: '36px 24px', textAlign: 'center' }}>
+              <div key={i} style={{ background: 'var(--surface-1)', padding: '36px 24px', textAlign: 'center' }}>
                 <div style={{ fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: '700', color: G, letterSpacing: '-2px', lineHeight: 1 }}>{s.value}</div>
-                <div style={{ fontSize: '12px', color: '#555', marginTop: '8px' }}>{s.label}</div>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '8px' }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -228,16 +233,16 @@ export default function Landing() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
             {testimonials.map((t, i) => (
-              <div key={i} style={{ background: '#111', border: '1px solid #1e1e1e', borderRadius: '12px', padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div key={i} style={{ background: 'var(--surface-1)', border: '1px solid #1e1e1e', borderRadius: '12px', padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', gap: '3px' }}>
                   {[...Array(5)].map((_, j) => <Star key={j} size={13} fill={G} color={G} />)}
                 </div>
-                <p style={{ fontSize: '14px', color: '#bbb', lineHeight: '1.75', flex: 1 }}>"{t.quote}"</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.75', flex: 1 }}>"{t.quote}"</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingTop: '12px', borderTop: '1px solid #1e1e1e' }}>
-                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: `linear-gradient(135deg, ${G}44, #1a1a1a)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: '700', color: G }}>{t.name[0]}</div>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: `linear-gradient(135deg, ${G}44, var(--border))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: '700', color: G }}>{t.name[0]}</div>
                   <div>
-                    <div style={{ fontSize: '13px', fontWeight: '600', color: '#ededed' }}>{t.name}</div>
-                    <div style={{ fontSize: '11px', color: '#555' }}>{t.role}</div>
+                    <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)' }}>{t.name}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{t.role}</div>
                   </div>
                 </div>
               </div>
@@ -284,7 +289,7 @@ export default function Landing() {
       {/* ─────────────────────────────────────────────
           7. FAQ
       ───────────────────────────────────────────── */}
-      <section id="faq" style={{ padding: '100px 24px', borderTop: '1px solid #161616', background: '#080808' }}>
+      <section id="faq" style={{ padding: '100px 24px', borderTop: '1px solid #161616', background: 'var(--background)' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '56px' }}>
             <p style={{ fontSize: '12px', color: G, fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '14px' }}>FAQ</p>
@@ -308,7 +313,7 @@ export default function Landing() {
             Prêt à gagner<br />
             <span style={{ color: G }}>2 heures par semaine ?</span>
           </h2>
-          <p style={{ fontSize: '16px', color: '#666', marginBottom: '40px', lineHeight: '1.7' }}>
+          <p style={{ fontSize: '16px', color: 'var(--text-muted)', marginBottom: '40px', lineHeight: '1.7' }}>
             Rejoignez les artisans qui ont déjà simplifié leur gestion avec ivy.
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -317,7 +322,7 @@ export default function Landing() {
               <ArrowRight size={17} style={{ marginLeft: '8px' }} />
             </Link>
           </div>
-          <p style={{ marginTop: '16px', fontSize: '12px', color: '#444' }}>Aucune carte bancaire requise · Annulation à tout moment</p>
+          <p style={{ marginTop: '16px', fontSize: '12px', color: 'var(--text-disabled)' }}>Aucune carte bancaire requise · Annulation à tout moment</p>
         </div>
       </section>
 
@@ -328,15 +333,15 @@ export default function Landing() {
         <div style={{ maxWidth: '1040px', margin: '0 auto', display: 'grid', gridTemplateColumns: '200px 1fr 1fr 1fr', gap: '40px' }}>
           <div>
             <Logo size={20} />
-            <p style={{ fontSize: '12px', color: '#444', marginTop: '12px', lineHeight: '1.7' }}>L'outil de gestion conçu pour les artisans du bâtiment.</p>
+            <p style={{ fontSize: '12px', color: 'var(--text-disabled)', marginTop: '12px', lineHeight: '1.7' }}>L'outil de gestion conçu pour les artisans du bâtiment.</p>
           </div>
           <FooterCol title="Produit" links={[['Fonctionnalités', '#features'], ['Tarifs', '#pricing'], ['Démo', '/register']]} />
           <FooterCol title="Compte" links={[['Se connecter', '/login'], ['Créer un compte', '/register'], ['Mot de passe oublié', '/login']]} />
           <FooterCol title="Légal" links={[['Mentions légales', '/login'], ['Politique de confidentialité', '/login'], ['CGU', '/login']]} />
         </div>
         <div style={{ maxWidth: '1040px', margin: '40px auto 0', paddingTop: '24px', borderTop: '1px solid #161616', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <p style={{ fontSize: '12px', color: '#333' }}>© 2025 ivy. Tous droits réservés.</p>
-          <p style={{ fontSize: '12px', color: '#333' }}>Fait avec soin pour les artisans 🛠️</p>
+          <p style={{ fontSize: '12px', color: 'var(--border-strong)' }}>© 2025 ivy. Tous droits réservés.</p>
+          <p style={{ fontSize: '12px', color: 'var(--border-strong)' }}>Fait avec soin pour les artisans 🛠️</p>
         </div>
       </footer>
 
@@ -360,7 +365,7 @@ export default function Landing() {
 function Logo({ size = 20 }) {
   return (
     <div style={{ display: 'flex', alignItems: 'baseline', textDecoration: 'none' }}>
-      <span style={{ fontSize: size, fontWeight: '700', color: '#ededed', letterSpacing: '-0.5px' }}>ivy</span>
+      <span style={{ fontSize: size, fontWeight: '700', color: 'var(--text-primary)', letterSpacing: '-0.5px' }}>ivy</span>
       <span style={{ fontSize: size, fontWeight: '700', color: G }}>.</span>
     </div>
   )
@@ -373,11 +378,11 @@ function FeatureSplit({ feature: f, reverse }) {
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', background: G2, border: `1px solid ${G3}`, borderRadius: '20px', padding: '4px 12px', marginBottom: '20px', fontSize: '11px', color: G, fontWeight: '500' }}>
           <f.icon size={11} /> {f.tag}
         </div>
-        <h3 style={{ fontSize: 'clamp(22px, 2.5vw, 30px)', fontWeight: '700', letterSpacing: '-1px', color: '#ededed', marginBottom: '16px', lineHeight: '1.2' }}>{f.title}</h3>
-        <p style={{ fontSize: '14px', color: '#666', lineHeight: '1.8', marginBottom: '24px' }}>{f.desc}</p>
+        <h3 style={{ fontSize: 'clamp(22px, 2.5vw, 30px)', fontWeight: '700', letterSpacing: '-1px', color: 'var(--text-primary)', marginBottom: '16px', lineHeight: '1.2' }}>{f.title}</h3>
+        <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: '1.8', marginBottom: '24px' }}>{f.desc}</p>
         <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', listStyle: 'none', padding: 0 }}>
           {f.points.map((pt, i) => (
-            <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '13px', color: '#999' }}>
+            <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '13px', color: 'var(--text-secondary)' }}>
               <CheckCircle2 size={15} color={G} style={{ flexShrink: 0, marginTop: '1px' }} />
               {pt}
             </li>
@@ -385,9 +390,9 @@ function FeatureSplit({ feature: f, reverse }) {
         </ul>
       </div>
       <div style={{ direction: 'ltr' }}>
-        <div style={{ background: '#111', border: '1px solid #1e1e1e', borderRadius: '12px', padding: '24px', minHeight: '240px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ background: 'var(--surface-1)', border: '1px solid #1e1e1e', borderRadius: '12px', padding: '24px', minHeight: '240px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg, transparent, ${G}88, transparent)` }} />
-          <div style={{ fontSize: '11px', color: '#444', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{f.mockupTitle}</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-disabled)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{f.mockupTitle}</div>
           {f.mockup}
         </div>
       </div>
@@ -397,26 +402,26 @@ function FeatureSplit({ feature: f, reverse }) {
 
 function PricingCard({ plan, price, period, desc, features, cta, ctaLink, featured }) {
   return (
-    <div style={{ background: featured ? '#111' : '#0d0d0d', border: `1px solid ${featured ? G3 : '#1e1e1e'}`, borderRadius: '12px', padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: '20px', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ background: featured ? 'var(--surface-1)' : 'var(--surface-1)', border: `1px solid ${featured ? G3 : 'var(--border)'}`, borderRadius: '12px', padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: '20px', position: 'relative', overflow: 'hidden' }}>
       {featured && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg, transparent, ${G}, transparent)` }} />}
       {featured && <div style={{ position: 'absolute', top: '14px', right: '16px', background: G2, border: `1px solid ${G3}`, borderRadius: '20px', padding: '2px 10px', fontSize: '10px', color: G, fontWeight: '600' }}>Recommandé</div>}
       <div>
-        <div style={{ fontSize: '13px', fontWeight: '600', color: featured ? G : '#666', marginBottom: '12px' }}>{plan}</div>
+        <div style={{ fontSize: '13px', fontWeight: '600', color: featured ? G : 'var(--text-muted)', marginBottom: '12px' }}>{plan}</div>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-          <span style={{ fontSize: '40px', fontWeight: '700', color: '#ededed', letterSpacing: '-2px' }}>{price}</span>
-          <span style={{ fontSize: '13px', color: '#555' }}>{period}</span>
+          <span style={{ fontSize: '40px', fontWeight: '700', color: 'var(--text-primary)', letterSpacing: '-2px' }}>{price}</span>
+          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{period}</span>
         </div>
-        <p style={{ fontSize: '13px', color: '#555', marginTop: '8px' }}>{desc}</p>
+        <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '8px' }}>{desc}</p>
       </div>
       <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', listStyle: 'none', padding: 0, flex: 1 }}>
         {features.map((f, i) => (
-          <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '9px', fontSize: '13px', color: '#888' }}>
+          <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '9px', fontSize: '13px', color: 'var(--text-secondary)' }}>
             <CheckCircle2 size={14} color={G} />
             {f}
           </li>
         ))}
       </ul>
-      <Link to={ctaLink} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: featured ? G : 'transparent', color: featured ? '#0a0a0a' : '#ededed', fontWeight: '600', fontSize: '13px', padding: '12px', borderRadius: '7px', border: featured ? 'none' : '1px solid #2a2a2a', textDecoration: 'none', transition: 'opacity 0.15s' }}>
+      <Link to={ctaLink} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: featured ? G : 'transparent', color: featured ? 'var(--background)' : 'var(--text-primary)', fontWeight: '600', fontSize: '13px', padding: '12px', borderRadius: '7px', border: featured ? 'none' : '1px solid var(--border-strong)', textDecoration: 'none', transition: 'opacity 0.15s' }}>
         {cta}
       </Link>
     </div>
@@ -426,12 +431,12 @@ function PricingCard({ plan, price, period, desc, features, cta, ctaLink, featur
 function FaqItem({ q, a }) {
   const [open, setOpen] = useState(false)
   return (
-    <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: '8px', overflow: 'hidden' }}>
-      <button onClick={() => setOpen(v => !v)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px', background: 'none', border: 'none', color: '#ededed', fontSize: '14px', fontWeight: '500', cursor: 'pointer', textAlign: 'left', gap: '12px' }}>
+    <div style={{ background: 'var(--surface-1)', border: '1px solid var(--border)', borderRadius: '8px', overflow: 'hidden' }}>
+      <button onClick={() => setOpen(v => !v)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px', background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '14px', fontWeight: '500', cursor: 'pointer', textAlign: 'left', gap: '12px' }}>
         {q}
         <ChevronDown size={16} color="#555" style={{ flexShrink: 0, transition: 'transform 0.2s', transform: open ? 'rotate(180deg)' : 'none' }} />
       </button>
-      {open && <div style={{ padding: '0 20px 18px', fontSize: '13px', color: '#777', lineHeight: '1.75', borderTop: '1px solid #1a1a1a', paddingTop: '16px' }}>{a}</div>}
+      {open && <div style={{ padding: '0 20px 18px', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.75', borderTop: '1px solid var(--border)', paddingTop: '16px' }}>{a}</div>}
     </div>
   )
 }
@@ -439,12 +444,12 @@ function FaqItem({ q, a }) {
 function FooterCol({ title, links }) {
   return (
     <div>
-      <div style={{ fontSize: '12px', fontWeight: '600', color: '#ededed', marginBottom: '16px', letterSpacing: '0.05em' }}>{title}</div>
+      <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '16px', letterSpacing: '0.05em' }}>{title}</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {links.map(([label, href], i) => (
-          <Link key={i} to={href} style={{ fontSize: '13px', color: '#555', textDecoration: 'none', transition: 'color 0.15s' }}
-            onMouseEnter={e => e.target.style.color = '#999'}
-            onMouseLeave={e => e.target.style.color = '#555'}
+          <Link key={i} to={href} style={{ fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.15s' }}
+            onMouseEnter={e => e.target.style.color = 'var(--text-secondary)'}
+            onMouseLeave={e => e.target.style.color = 'var(--text-muted)'}
           >{label}</Link>
         ))}
       </div>
@@ -455,9 +460,9 @@ function FooterCol({ title, links }) {
 /* ── Styles partagés ──────────────────────────────────────────────────────── */
 
 const h2 = { fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: '700', letterSpacing: '-1.5px', marginBottom: '16px', lineHeight: '1.1' }
-const sub = { fontSize: '15px', color: '#666', maxWidth: '460px', margin: '0 auto', lineHeight: '1.75' }
-const navLink = { color: '#888', fontSize: '13px', fontWeight: '500', textDecoration: 'none', transition: 'color 0.15s' }
-const primaryBtn = { display: 'inline-flex', alignItems: 'center', background: G, color: '#0a0a0a', fontWeight: '600', fontSize: '13px', padding: '10px 20px', borderRadius: '7px', textDecoration: 'none', transition: 'opacity 0.15s', border: 'none', cursor: 'pointer' }
+const sub = { fontSize: '15px', color: 'var(--text-muted)', maxWidth: '460px', margin: '0 auto', lineHeight: '1.75' }
+const navLink = { color: 'var(--text-secondary)', fontSize: '13px', fontWeight: '500', textDecoration: 'none', transition: 'color 0.15s' }
+const primaryBtn = { display: 'inline-flex', alignItems: 'center', background: G, color: 'var(--background)', fontWeight: '600', fontSize: '13px', padding: '10px 20px', borderRadius: '7px', textDecoration: 'none', transition: 'opacity 0.15s', border: 'none', cursor: 'pointer' }
 
 /* ── Data ─────────────────────────────────────────────────────────────────── */
 
@@ -478,13 +483,13 @@ const productFeatures = [
     mockupTitle: 'Aperçu devis',
     mockup: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        <div style={{ background: '#1a1a1a', borderRadius: '6px', padding: '10px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div><div style={{ fontSize: '10px', color: '#555', marginBottom: '2px' }}>GROUPE — Gros œuvre</div><div style={{ fontSize: '12px', color: '#888' }}>3 prestations</div></div>
+        <div style={{ background: 'var(--border)', borderRadius: '6px', padding: '10px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div><div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '2px' }}>GROUPE — Gros œuvre</div><div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>3 prestations</div></div>
           <div style={{ fontSize: '13px', fontWeight: '700', color: G }}>8 400 €</div>
         </div>
         {[['Maçonnerie', '1 200 €'], ['Terrassement', '3 600 €'], ['Coffrage', '3 600 €']].map(([l, v]) => (
           <div key={l} style={{ paddingLeft: '12px', borderLeft: `2px solid ${G}44`, display: 'flex', justifyContent: 'space-between', padding: '7px 10px 7px 14px', fontSize: '12px' }}>
-            <span style={{ color: '#777' }}>{l}</span><span style={{ color: '#aaa', fontWeight: '600' }}>{v}</span>
+            <span style={{ color: 'var(--text-secondary)' }}>{l}</span><span style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>{v}</span>
           </div>
         ))}
         <div style={{ marginTop: '4px', display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: G2, borderRadius: '6px' }}>
@@ -503,21 +508,21 @@ const productFeatures = [
     mockupTitle: 'Transcription en cours',
     mockup: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', background: '#1a1a1a', borderRadius: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', background: 'var(--border)', borderRadius: '8px' }}>
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: G2, border: `1px solid ${G3}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <Mic size={14} color={G} />
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '11px', color: '#555', marginBottom: '4px' }}>Transcription</div>
-            <div style={{ fontSize: '12px', color: '#aaa', fontStyle: 'italic' }}>"Pose de carrelage 80m² à 35 euros du mètre..."</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px' }}>Transcription</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontStyle: 'italic' }}>"Pose de carrelage 80m² à 35 euros du mètre..."</div>
           </div>
         </div>
         {[['Pose de carrelage', '80 m²', '2 800 €'], ['Fourniture carrelage', '80 m²', '1 440 €'], ['Joint et colle', '1 forfait', '180 €']].map(([l, q, v]) => (
-          <div key={l} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: '#161616', borderRadius: '6px', fontSize: '12px' }}>
+          <div key={l} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: 'var(--surface-2)', borderRadius: '6px', fontSize: '12px' }}>
             <CheckCircle2 size={13} color={G} />
-            <span style={{ color: '#888', flex: 1 }}>{l}</span>
-            <span style={{ color: '#555' }}>{q}</span>
-            <span style={{ color: '#aaa', fontWeight: '600' }}>{v}</span>
+            <span style={{ color: 'var(--text-secondary)', flex: 1 }}>{l}</span>
+            <span style={{ color: 'var(--text-muted)' }}>{q}</span>
+            <span style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>{v}</span>
           </div>
         ))}
       </div>
@@ -532,18 +537,18 @@ const productFeatures = [
     mockupTitle: 'Fiche client',
     mockup: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', background: '#1a1a1a', borderRadius: '8px' }}>
-          <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: `linear-gradient(135deg, ${G}44, #1a1a1a)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '700', color: G, flexShrink: 0 }}>D</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', background: 'var(--border)', borderRadius: '8px' }}>
+          <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: `linear-gradient(135deg, ${G}44, var(--border))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '700', color: G, flexShrink: 0 }}>D</div>
           <div>
-            <div style={{ fontSize: '13px', fontWeight: '600', color: '#ededed' }}>M. Dupont</div>
-            <div style={{ fontSize: '11px', color: '#555' }}>dupont@mail.fr · 06 12 34 56 78</div>
+            <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)' }}>M. Dupont</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>dupont@mail.fr · 06 12 34 56 78</div>
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
           {[['CA total', '42 800 €'], ['Devis', '8'], ['Acceptés', '6'], ['En attente', '2']].map(([l, v]) => (
-            <div key={l} style={{ background: '#161616', borderRadius: '6px', padding: '10px 12px' }}>
-              <div style={{ fontSize: '10px', color: '#555', marginBottom: '3px' }}>{l}</div>
-              <div style={{ fontSize: '14px', fontWeight: '700', color: '#ededed' }}>{v}</div>
+            <div key={l} style={{ background: 'var(--surface-2)', borderRadius: '6px', padding: '10px 12px' }}>
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '3px' }}>{l}</div>
+              <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)' }}>{v}</div>
             </div>
           ))}
         </div>
